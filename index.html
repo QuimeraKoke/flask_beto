@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BETO Contralor | análisis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #264653;
+            color: #f4ebe8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            margin-top: 20vh;
+            text-align: center;
+
+        }
+        p {
+            margin: 10px 50px;
+        }
+        footer{
+            margin-top: auto;
+            padding-bottom: 20px;
+        }
+        footer p {
+            text-align: center;
+            font-size: 12px;
+        }
+        .table {
+            color: #f4ebe8;
+        }
+        th{
+            font-weight: bold;
+            font-size: 20px;
+        }
+        td{
+            font-size: 15px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container-md">
+    <div class="container">
+        <div class="container my-3">
+            <h1>BETO [Contralor]</h1>
+            <p>Ingrese un diagnostico relacionado a las siguientes derivaciones: <span>CARDIOLOGIA</span>,  <span>CIRUGIA ADULTO</span>,  <span>DERMATOLOGIA</span>,  <span>ENDODONCIA</span>,  <span>GASTROENTEROLOGIA</span>,  <span>GINECOLOGIA</span>,  <span>MEDICINA INTERNA</span>,  <span>NEUROLOGIA</span>,  <span>OFTALMOLOGIA</span>,  <span>OTORRINOLARINGOLOGIA</span>,  <span>PEDIATRIA</span>,  <span>TRAUMATOLOGIA</span> u <span>UROLOGIA</span> </p>
+        </div>
+        <div class="input-group" style="margin-top: 50px; margin-bottom: 50px">
+            <input type="text" id="diagnostic" class="form-control" placeholder="Dolor de muelas..." aria-label="Recipient's username" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" style="background-color: #2a9d8f; color: white; font-weight: bold" type="button" id="button">Derivar!</button>
+
+        </div>
+    </div>
+    <div class="container" style="margin-bottom: 50px">
+        <table class="table" id="results" style="display: none">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Especialidad</th>
+                <th scope="col">% de confiabilidad</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<footer class="container class="">
+    <p >This project is project was created by: <br>Simón San Martín
+        <br>Fabian Díaz
+        <br>Jorge Gutiérrez
+        <br>Karla Ramos.
+    </p>
+
+    <p>© 2021 QuimeraKoke.</p>
+</footer>
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+-->
+<script>
+    $( document ).ready(function() {
+        $('#button').click((e) => {
+            $("#results").empty();
+            $("#results").show();
+            $.post(
+                "/",
+                { diagnostic: $('#diagnostic').val() }
+            ).done(( json ) => {
+                json.predictions.sort((a, b) => b.percentage - a.percentage).map( (p, i) => {
+                    $('#results').append(`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.percentage}%</td></tr>`);
+                });
+            });
+        })
+    });
+
+</script>
+</body>
+</html>
